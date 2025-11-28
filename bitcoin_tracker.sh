@@ -7,6 +7,11 @@ btc_file="btc_data.html"
 curl "$btc_src" > "$btc_file"
 
 
-# search for money data values, clean and reformat data as a number to 2 decimal pts
-btc_data=$(grep -o "\$[0-9,]\+\.[0-9]\+" "$btc_file" | sed "s/[$,]//g" | awk '{printf "%.2f\n", $1}')
-echo "$btc_data"
+# search for money values, clean and reformat data into numbers, and arrange data in an array
+btc_data=($(grep -o "\$[0-9,]\+\.[0-9]\+" "$btc_file" | sed "s/[$,]//g" | awk '{printf "%.2f\n", $1}'))
+btc_usd=${btc_data[0]}
+btc_low_24h=${btc_data[13]}
+btc_high_24h=${btc_data[14]}
+echo "$btc_usd"
+echo "$btc_low_24h"
+echo "$btc_high_24h"
