@@ -14,6 +14,14 @@ fi
 # fetch website data and save output in a new file
 curl "$btc_src" > "$btc_file"
 
+# check if website is blocking the script or not
+if grep 'data-test="text-cdp-price-display"' "$btc_file"; then
+	echo "Script is not blocked, proceeding..."
+else
+	echo "Error! Script is blocked."
+	exit 1
+fi
+
 # search for money values, clean and reformat data into numbers, and arrange data in an array
 btc_data=($(grep -o "\$[0-9,]\+\.[0-9]\+" "$btc_file" | sed "s/[$,]//g" | awk '{printf "%.2f\n", $1}'))
 btc_usd=${btc_data[0]}
