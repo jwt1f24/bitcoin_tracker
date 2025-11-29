@@ -4,7 +4,7 @@ btc_src="https://coinmarketcap.com/currencies/bitcoin/"
 btc_file="btc_data.html"
 
 # check if network is down or not
-if ping -c 1 8.8.8.8; then
+if ping -c 4 8.8.8.8; then
 	echo "Network is available! Proceeding..."
 else
 	echo "Error! Network is down..."
