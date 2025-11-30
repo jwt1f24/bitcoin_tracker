@@ -27,3 +27,6 @@ btc_data=($(grep -o "\$[0-9,]\+\.[0-9]\+" "$btc_file" | sed "s/[$,]//g" | awk '{
 btc_usd=${btc_data[0]}
 btc_low_24h=${btc_data[13]}
 btc_high_24h=${btc_data[14]}
+
+# fetch time the data was collected
+datecollected=$(date "+%d-%m-%Y %H:%M:%S")
