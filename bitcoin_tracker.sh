@@ -29,4 +29,4 @@ btc_low_24h=${btc_data[13]}
 btc_high_24h=${btc_data[14]}
 
 # fetch time the data was collected
-datecollected=$(date "+%d-%m-%Y %H:%M:%S")
+datecollected=$(date +"%Y-%m-%d %H:%M:%S")
