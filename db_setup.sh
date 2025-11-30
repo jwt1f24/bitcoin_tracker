@@ -23,5 +23,8 @@ CREATE TABLE prices (
 	FOREIGN KEY (currencyID) REFERENCES cryptocurrency(currencyID)
 );
 
+INSERT INTO cryptocurrency(name) VALUES
+("Bitcoin");
+
 EOFMYSQL
 echo "Database is successfully created!"
