@@ -32,6 +32,11 @@ btc_usd=${btc_data[0]}
 btc_low_24h=${btc_data[13]}
 btc_high_24h=${btc_data[14]}
 
+eth_data=($(grep -o "\$[0-9,]\+\.[0-9]\+" "$eth_file" | sed "s/[$,]//g" | awk '{printf "%.2f\n", $1}'))
+eth_usd=${eth_data[0]}
+eth_low_24h=${eth_data[11]}
+eth_high_24h=${eth_data[12]}
+
 # fetch time the data was collected
 datecollected=$(date +"%Y-%m-%d %H:%M:%S")
 
