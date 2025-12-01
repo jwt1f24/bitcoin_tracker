@@ -1,5 +1,6 @@
 #!/bin/bash
 
+user="root"
 btc_src="https://coinmarketcap.com/currencies/bitcoin/"
 btc_file="btc_data.html"
 
@@ -30,3 +31,12 @@ btc_high_24h=${btc_data[14]}
 
 # fetch time the data was collected
 datecollected=$(date +"%Y-%m-%d %H:%M:%S")
+
+# access mysql to insert data
+mysql -u root <<EOFMYSQL
+
+USE bitcoin_tracker;
+
+
+EOFMYSQL
+echo "Script finished executing."
