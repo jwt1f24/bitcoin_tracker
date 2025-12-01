@@ -32,11 +32,13 @@ btc_high_24h=${btc_data[14]}
 # fetch time the data was collected
 datecollected=$(date +"%Y-%m-%d %H:%M:%S")
 
-# access mysql to insert data
-mysql -u root <<EOFMYSQL
+# insert data into database
+mysql -u "$user" <<EOFMYSQL
 
 USE bitcoin_tracker;
 
+INSERT INTO prices(currencyID, price_usd, lowest_24h, highest_24h, datecollected) VALUES
+(1, "$btc_usd", "$btc_low_24h", "$btc_high_24h", "$datecollected");
 
 EOFMYSQL
 echo "Script finished executing."
