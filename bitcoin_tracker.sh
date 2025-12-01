@@ -3,6 +3,8 @@
 user="root"
 btc_src="https://coinmarketcap.com/currencies/bitcoin/"
 btc_file="btc_data.html"
+eth_src="https://coinmarketcap.com/currencies/ethereum/"
+eth_file="eth_data.html"
 
 # check if network is down or not
 if ping -c 4 8.8.8.8; then
@@ -14,6 +16,7 @@ fi
 
 # fetch website data and save output in a new file
 curl "$btc_src" > "$btc_file"
+curl "$eth_src" > "$eth_file"
 
 # check if script is blocked by website or not
 if grep -q 'data-test="text-cdp-price-display"' "$btc_file"; then
