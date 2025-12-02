@@ -55,7 +55,8 @@ USE bitcoin_tracker;
 
 INSERT INTO prices(currencyID, price_usd, lowest_24h, highest_24h, datecollected) VALUES
 (1, "$btc_usd", "$btc_low_24h", "$btc_high_24h", "$datecollected"),
-(2, "$eth_usd", "$eth_low_24h", "$eth_high_24h", "$datecollected");
+(2, "$eth_usd", "$eth_low_24h", "$eth_high_24h", "$datecollected"),
+(3, "$xrp_usd", "$xrp_low_24h", "$xrp_high_24h", "$datecollected");
 
 EOFMYSQL
 echo "Script finished executing."
