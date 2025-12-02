@@ -40,6 +40,11 @@ eth_usd=${eth_data[0]}
 eth_low_24h=${eth_data[11]}
 eth_high_24h=${eth_data[12]}
 
+xrp_data=($(grep -o "\$[0-9,]\+\.[0-9]\+" "$xrp_file" | sed "s/[$,]//g" | awk '{printf "%.2f\n", $1}'))
+xrp_usd=${eth_data[0]}
+xrp_low_24h=${eth_data[9]}
+xrp_high_24h=${eth_data[10]}
+
 # fetch time the data was collected
 datecollected=$(date +"%Y-%m-%d %H:%M:%S")
 
