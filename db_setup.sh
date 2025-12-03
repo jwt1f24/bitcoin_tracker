@@ -24,7 +24,7 @@ CREATE TABLE prices (
 );
 
 INSERT INTO cryptocurrency(name) VALUES
-("Bitcoin"), ("Ethereum"), ("XRP");
+("Bitcoin"), ("Ethereum"), ("XRP"), ("BNB");
 
 EOFMYSQL
 echo "Database is successfully created!"
