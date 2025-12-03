@@ -48,6 +48,11 @@ xrp_usd=${eth_data[0]}
 xrp_low_24h=${eth_data[9]}
 xrp_high_24h=${eth_data[10]}
 
+bnb_data=($(grep -o "\$[0-9,]\+\.[0-9]\+" "$bnb_file" | sed "s/[$,]//g" | awk '{printf "%.2f\n", $1}'))
+bnb_usd=${bnb_data[0]}
+bnb_low_24h=${bnb_data[8]}
+bnb_high_24h=${bnb_data[9]}
+
 # fetch time the data was collected
 datecollected=$(date +"%Y-%m-%d %H:%M:%S")
 
