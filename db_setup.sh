@@ -5,15 +5,15 @@ user="root"
 # activate mysql to create database and tables
 mysql -u "$user" <<EOFMYSQL
 
-CREATE DATABASE bitcoin_tracker;
+CREATE DATABASE IF NOT EXISTS bitcoin_tracker;
 USE bitcoin_tracker;
 
-CREATE TABLE cryptocurrency (
+CREATE TABLE IF NOT EXISTS cryptocurrency (
 	currencyID INT AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
 	name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE prices (
+CREATE TABLE IF NOT EXISTS prices (
         priceID INT AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
         currencyID INT NOT NULL,
 	price_usd DECIMAL(20, 2) NOT NULL,
@@ -27,4 +27,4 @@ INSERT INTO cryptocurrency(name) VALUES
 ("Bitcoin"), ("Ethereum"), ("XRP"), ("BNB");
 
 EOFMYSQL
-echo "Database is successfully created!"
+echo "Database and tables are successfully created! Data can be inserted now."
