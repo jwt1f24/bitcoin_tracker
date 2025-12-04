@@ -19,10 +19,8 @@ else
 fi
 
 # fetch website data and save output in a new file
-curl "$btc_src" > "$btc_file"
-curl "$eth_src" > "$eth_file"
-curl "$xrp_src" > "$xrp_file"
-curl "$bnb_src" > "$bnb_file"
+curl "$btc_src" > "$btc_file"; curl "$eth_src" > "$eth_file";
+curl "$xrp_src" > "$xrp_file"; curl "$bnb_src" > "$bnb_file"
 
 # check if script is blocked by website or not
 if grep -q 'data-test="text-cdp-price-display"' "$btc_file"; then
