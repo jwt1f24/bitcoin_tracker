@@ -5,6 +5,7 @@ user="root"
 # activate mysql to create database and tables
 mysql -u "$user" <<EOFMYSQL
 
+DROP DATABASE IF EXISTS bitcoin_tracker;
 CREATE DATABASE IF NOT EXISTS bitcoin_tracker;
 USE bitcoin_tracker;
 
