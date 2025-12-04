@@ -1,6 +1,8 @@
 #!/bin/bash
 
+dbname="bitcoin_tracker"
 user="root"
+password=""
 btc_src="https://coinmarketcap.com/currencies/bitcoin/"
 btc_file="btc_data.html"
 eth_src="https://coinmarketcap.com/currencies/ethereum/"
