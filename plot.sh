@@ -16,6 +16,9 @@ gnuplot <<EOF
 	set title 'Bitcoin USD Prices'
 	set xlabel 'Date Collected'
 	set ylabel 'Price (USD)'
+	set xdata time
+	set timefmt '%Y-%m-%d %H:%M:%S'
+	set format '%d-%m'
 	plot "outfile.dat" u 1:2 w l t 'data'
 EOF
 }
