@@ -4,12 +4,15 @@ dbname="bitcoin_tracker"
 user="root"
 
 # plot 1: get bitcoin USD prices
-bitcoinpriceusd() {
-mysql -u "$user" -e "
+bitcoinprice() {
+# get data from mysql website
+mysql -u "$user" -N -e "
 USE bitcoin_tracker;
-SELECT datecollected, price_usd FROM prices WHERE currencyID = 1 ORDER BY datecollected;
+SELECT datecollected, price_usd FROM prices WHERE currencyID = 1
+AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
 " > outfile.dat
 
+# create plot
 gnuplot <<EOF
 	set terminal png font 'Arial'
 	set output 'image.png'
@@ -17,8 +20,13 @@ gnuplot <<EOF
 	set xlabel 'Date Collected'
 	set ylabel 'Price (USD)'
 	set xdata time
-	set timefmt '%Y-%m-%d %H:%M:%S'
-	set format '%d-%m\n%H:%M'
-	plot "outfile.dat" u 1:2 w l t 'data'
+	set timefmt "%Y-%m-%d %H:%M:%S" # format time in output file
+	set format "%d-%m\n%H:%M" # output time in image
+	set datafile separator "\t" # separate data into columns
+	set grid
+	set yrange [80000:100000]
+	set ytics 80000, 2000, 100000
+	set format y "%.2f"
+	plot "outfile.dat" u 1:2 w l lc rgb 'red' t 'data'
 EOF
 }
