@@ -109,6 +109,50 @@ gnuplot <<EOF
 EOF
 }
 
+# plot 5: get all cryptocurrency USD prices
+allprices() {
+mysql -u "$user" -N -e "
+USE bitcoin_tracker;
+SELECT datecollected, price_usd FROM prices WHERE currencyID = 1
+AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
+" > outfile.dat
+mysql -u "$user" -N -e "
+USE bitcoin_tracker;
+SELECT datecollected, price_usd FROM prices WHERE currencyID = 2
+AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
+" > outfile2.dat
+mysql -u "$user" -N -e "
+USE bitcoin_tracker;
+SELECT datecollected, price_usd FROM prices WHERE currencyID = 3
+AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
+" > outfile3.dat
+mysql -u "$user" -N -e "
+USE bitcoin_tracker;
+SELECT datecollected, price_usd FROM prices WHERE currencyID = 4
+AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
+" > outfile4.dat
+
+gnuplot <<EOF
+        set terminal png font 'Arial' size 1280, 720
+        set output 'allprices.png'
+        set title 'Cryptocurrency USD Prices in a Day'
+        set xlabel 'Date Collected'
+        set ylabel 'Price USD ($)'
+        set xdata time
+        set timefmt "%Y-%m-%d %H:%M:%S" # format time in output file
+        set format "%d-%m\n%H:%M" # output time in image
+        set datafile separator "\t" # separate data into columns
+        set grid
+        set yrange [0:100000]
+        set ytics 0, 10000, 100000
+        set format y "%.2f"
+	plot "outfile.dat" u 1:2 w lp lc rgb 'red' pt 2 t 'Bitcoin'
+	plot "outfile.dat" u 1:2 w lp lc rgb 'yellow' pt 2 t 'Ethereum'
+        plot "outfile.dat" u 1:2 w lp lc rgb 'green' pt 2 t 'XRP'
+	plot "outfile.dat" u 1:2 w lp lc rgb 'blue' pt 2 t 'BNB'
+EOF
+}
+
 # parameters for executing function
 if [[ "$1" == "bitcoinprice" ]]; then
 	bitcoinprice
@@ -118,4 +162,6 @@ elif [[ "$1" == "xrpprice" ]]; then
         xrpprice
 elif [[ "$1" == "bnbprice" ]]; then
         bnbprice
+elif [[ "$1" == "allprices" ]]; then
+        allprices
 fi
