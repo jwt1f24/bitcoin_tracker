@@ -108,3 +108,14 @@ gnuplot <<EOF
         plot "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'BNB'
 EOF
 }
+
+# parameters for executing function
+if [[ "$1" == "bitcoinprice" ]]; then
+	bitcoinprice
+elif [[ "$1" == "ethereumprice" ]]; then
+	ethereumprice
+elif [[ "$1" == "xrpprice" ]]; then
+        xrpprice
+elif [[ "$1" == "bnbprice" ]]; then
+        bnbprice
+fi
