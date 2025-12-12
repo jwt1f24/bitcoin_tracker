@@ -146,10 +146,11 @@ gnuplot <<EOF
         set yrange [0:100000]
         set ytics 0, 10000, 100000
         set format y "%.2f"
-	plot "outfile.dat" u 1:2 w lp lc rgb 'red' pt 2 t 'Bitcoin'
-	plot "outfile.dat" u 1:2 w lp lc rgb 'yellow' pt 2 t 'Ethereum'
-        plot "outfile.dat" u 1:2 w lp lc rgb 'green' pt 2 t 'XRP'
-	plot "outfile.dat" u 1:2 w lp lc rgb 'blue' pt 2 t 'BNB'
+	plot \
+		"outfile.dat" u 1:2 w lp lc rgb 'red' pt 2 t 'Bitcoin', \
+		"outfile2.dat" u 1:2 w lp lc rgb 'yellow' pt 2 t 'Ethereum', \
+        	"outfile3.dat" u 1:2 w lp lc rgb 'green' pt 2 t 'XRP', \
+		"outfile4.dat" u 1:2 w lp lc rgb 'blue' pt 2 t 'BNB'
 EOF
 }
 
