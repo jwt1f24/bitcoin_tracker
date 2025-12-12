@@ -56,3 +56,29 @@ gnuplot <<EOF
         plot "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Ethereum'
 EOF
 }
+
+# plot 3: get XRP USD prices
+xrpprice() {
+mysql -u "$user" -N -e "
+USE bitcoin_tracker;
+SELECT datecollected, price_usd FROM prices WHERE currencyID = 3
+AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
+" > outfile.dat
+
+gnuplot <<EOF
+        set terminal png font 'Arial' size 1280, 720
+        set output 'xrpprice.png'
+        set title 'XRP USD Prices in a Day'
+        set xlabel 'Date Collected'
+        set ylabel 'Price USD ($)'
+        set xdata time
+        set timefmt "%Y-%m-%d %H:%M:%S" # format time in output file
+        set format "%d-%m\n%H:%M" # output time in image
+        set datafile separator "\t" # separate data into columns
+        set grid
+        set yrange [0:3]
+        set ytics 0, 0.25, 3
+        set format y "%.2f"
+        plot "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'XRP'
+EOF
+}
