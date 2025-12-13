@@ -224,6 +224,41 @@ gnuplot <<EOF
 EOF
 }
 
+# plot 8: compare 24hr highest & lowest price of XRP
+xrp24hr() {
+mysql -u "$user" -N -e "
+USE bitcoin_tracker;
+SELECT datecollected, lowest_24h FROM prices WHERE currencyID = 3
+AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
+AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
+" > outfile.dat
+mysql -u "$user" -N -e "
+USE bitcoin_tracker;
+SELECT datecollected, highest_24h FROM prices WHERE currencyID = 3
+AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
+AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
+" > outfile2.dat
+
+gnuplot <<EOF
+        set terminal png font 'Arial' size 1280, 720
+        set output 'xrp24hr.png'
+        set title 'Highest & Lowest XRP Prices in 24 Hours Across One Week'
+        set xlabel 'Date Collected'
+        set ylabel 'Price USD ($)'
+        set xdata time
+        set timefmt "%Y-%m-%d %H:%M:%S" # format time in output file
+        set format "%d-%m\n%H:%M" # output time in image
+        set datafile separator "\t" # separate data into columns
+        set grid
+        set yrange [0:4]
+        set ytics 0, 0.25, 4
+        set format y "%.2f"
+        plot \
+                "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
+                "outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
+EOF
+}
+
 # parameters for executing function
 if [[ "$1" == "bitcoinprice" ]]; then
 	bitcoinprice
@@ -239,4 +274,6 @@ elif [[ "$1" == "bitcoin24hr" ]]; then
         bitcoin24hr
 elif [[ "$1" == "ethereum24hr" ]]; then
         ethereum24hr
+elif [[ "$1" == "xrp24hr" ]]; then
+        xrp24hr
 fi
