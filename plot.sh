@@ -4,19 +4,19 @@ dbname="bitcoin_tracker"
 user="root"
 
 # plot 1: get bitcoin USD prices
-bitcoinprice() {
+bitcoinpricechanges() {
 # get data from mysql website
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 1
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 
 # create plot
 gnuplot <<EOF
 	set terminal png font 'Arial' size 1280, 720
-	set output 'bitcoinprice.png'
-	set title 'Bitcoin USD Prices in a Day'
+	set output 'gnuplot/bitcoinpricechanges.png'
+	set title 'Bitcoin Price Changes Across a 24-Hour Period'
 	set xlabel 'Date Collected'
 	set ylabel 'Price USD ($)'
 	set xdata time
@@ -25,24 +25,24 @@ gnuplot <<EOF
 	set datafile separator "\t" # separate data into columns
 	set grid
 	set yrange [80000:100000]
-	set ytics 80000, 2000, 100000
+	set ytics 80000, 2500, 100000
 	set format y "%.2f"
-	plot "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Bitcoin'
+	plot "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Bitcoin'
 EOF
 }
 
 # plot 2: get Ethereum USD prices
-ethereumprice() {
+ethereumpricechanges() {
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 2
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'ethereumprice.png'
-        set title 'Ethereum USD Prices in a Day'
+        set output 'gnuplot/ethereumpricechanges.png'
+        set title 'Ethereum Price Changes Across a 24-Hour Period'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
         set xdata time
@@ -50,25 +50,25 @@ gnuplot <<EOF
         set format "%d-%m\n%H:%M" # output time in image
         set datafile separator "\t" # separate data into columns
         set grid
-        set yrange [2000:4000]
-        set ytics 2000, 200, 4000
+        set yrange [2000:5000]
+        set ytics 2000, 500, 5000
         set format y "%.2f"
-        plot "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Ethereum'
+        plot "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Ethereum'
 EOF
 }
 
 # plot 3: get XRP USD prices
-xrpprice() {
+xrppricechanges() {
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 3
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'xrpprice.png'
-        set title 'XRP USD Prices in a Day'
+        set output 'gnuplot/xrppricechanges.png'
+        set title 'XRP Price Changes Across a 24-Hour Period'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
         set xdata time
@@ -76,24 +76,24 @@ gnuplot <<EOF
         set format "%d-%m\n%H:%M" # output time in image
         set datafile separator "\t" # separate data into columns
         set grid
-        set yrange [0:3]
-        set ytics 0, 0.25, 3
+        set yrange [0:4]
+        set ytics 0, 0.5, 4
         set format y "%.2f"
-        plot "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'XRP'
+        plot "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'XRP'
 EOF
 }
 
 # plot 4: get BNB USD prices
-bnbprice() {
+bnbpricechanges() {
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 4
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'bnbprice.png'
+        set output 'gnuplot/bnbpricechanges.png'
         set title 'BNB USD Prices in a Day'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
@@ -103,39 +103,39 @@ gnuplot <<EOF
         set datafile separator "\t" # separate data into columns
         set grid
         set yrange [800:1000]
-        set ytics 800, 20, 1000
+        set ytics 800, 25, 1000
         set format y "%.2f"
-        plot "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'BNB'
+        plot "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'BNB'
 EOF
 }
 
 # plot 5: get all cryptocurrency USD prices
-allprices() {
+allpricechanges() {
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 1
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 2
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile2.dat
+" > gnuplot/outfile2.dat
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 3
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile3.dat
+" > gnuplot/outfile3.dat
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, price_usd FROM prices WHERE currencyID = 4
 AND datecollected BETWEEN '2025-12-10 00:00:00' AND '2025-12-11 00:00:59';
-" > outfile4.dat
+" > gnuplot/outfile4.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'allprices.png'
-        set title 'Cryptocurrency USD Prices in a Day'
+        set output 'allpricechanges.png'
+        set title 'Cryptocurrency Price Changes Across a 24-Hour Period'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
         set xdata time
@@ -147,10 +147,10 @@ gnuplot <<EOF
         set ytics 0, 10000, 100000
         set format y "%.2f"
 	plot \
-		"outfile.dat" u 1:2 w lp lc rgb 'red' pt 2 t 'Bitcoin', \
-		"outfile2.dat" u 1:2 w lp lc rgb 'yellow' pt 2 t 'Ethereum', \
-        	"outfile3.dat" u 1:2 w lp lc rgb 'green' pt 2 t 'XRP', \
-		"outfile4.dat" u 1:2 w lp lc rgb 'blue' pt 2 t 'BNB'
+		"gnuplot/outfile.dat" u 1:2 w lp lc rgb 'red' pt 2 t 'Bitcoin', \
+		"gnuplot/outfile2.dat" u 1:2 w lp lc rgb 'yellow' pt 2 t 'Ethereum', \
+        	"gnuplot/outfile3.dat" u 1:2 w lp lc rgb 'green' pt 2 t 'XRP', \
+		"gnuplot/outfile4.dat" u 1:2 w lp lc rgb 'blue' pt 2 t 'BNB'
 EOF
 }
 
@@ -161,17 +161,17 @@ USE bitcoin_tracker;
 SELECT datecollected, lowest_24h FROM prices WHERE currencyID = 1
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, highest_24h FROM prices WHERE currencyID = 1
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile2.dat
+" > gnuplot/outfile2.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'bitcoin24hr.png'
+        set output 'gnuplot/bitcoin24hr.png'
         set title 'Highest & Lowest Bitcoin Prices in 24 Hours Across One Week'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
@@ -181,11 +181,11 @@ gnuplot <<EOF
         set datafile separator "\t" # separate data into columns
         set grid
         set yrange [80000:100000]
-        set ytics 80000, 2000, 100000
+        set ytics 80000, 2500, 100000
         set format y "%.2f"
         plot \
-                "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
-                "outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
+                "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
+                "gnuplot/outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
 EOF
 }
 
@@ -196,17 +196,17 @@ USE bitcoin_tracker;
 SELECT datecollected, lowest_24h FROM prices WHERE currencyID = 2
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, highest_24h FROM prices WHERE currencyID = 2
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile2.dat
+" > gnuplot/outfile2.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'ethereum24hr.png'
+        set output 'gnuplot/ethereum24hr.png'
         set title 'Highest & Lowest Ethereum Prices in 24 Hours Across One Week'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
@@ -215,12 +215,12 @@ gnuplot <<EOF
         set format "%d-%m\n%H:%M" # output time in image
         set datafile separator "\t" # separate data into columns
         set grid
-        set yrange [2500:5500]
-        set ytics 2500, 250, 5500
+        set yrange [2000:5000]
+        set ytics 2000, 500, 5000
         set format y "%.2f"
         plot \
-                "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
-                "outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
+                "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
+                "gnuplot/outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
 EOF
 }
 
@@ -231,17 +231,17 @@ USE bitcoin_tracker;
 SELECT datecollected, lowest_24h FROM prices WHERE currencyID = 3
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, highest_24h FROM prices WHERE currencyID = 3
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile2.dat
+" > gnuplot/outfile2.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'xrp24hr.png'
+        set output 'gnuplot/xrp24hr.png'
         set title 'Highest & Lowest XRP Prices in 24 Hours Across One Week'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
@@ -254,8 +254,8 @@ gnuplot <<EOF
         set ytics 0, 0.25, 4
         set format y "%.2f"
         plot \
-                "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
-                "outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
+                "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
+                "gnuplot/outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
 EOF
 }
 
@@ -266,17 +266,17 @@ USE bitcoin_tracker;
 SELECT datecollected, lowest_24h FROM prices WHERE currencyID = 4
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile.dat
+" > gnuplot/outfile.dat
 mysql -u "$user" -N -e "
 USE bitcoin_tracker;
 SELECT datecollected, highest_24h FROM prices WHERE currencyID = 4
 AND datecollected BETWEEN '2025-12-01' AND '2025-12-09'
 AND TIME(datecollected) BETWEEN '00:00:00' AND '00:00:59';
-" > outfile2.dat
+" > gnuplot/outfile2.dat
 
 gnuplot <<EOF
         set terminal png font 'Arial' size 1280, 720
-        set output 'bnb24hr.png'
+        set output 'gnuplot/bnb24hr.png'
         set title 'Highest & Lowest BNB Prices in 24 Hours Across One Week'
         set xlabel 'Date Collected'
         set ylabel 'Price USD ($)'
@@ -285,26 +285,26 @@ gnuplot <<EOF
         set format "%d-%m\n%H:%M" # output time in image
         set datafile separator "\t" # separate data into columns
         set grid
-        set yrange [700:1000]
-        set ytics 700, 25, 1000
+        set yrange [800:1000]
+        set ytics 800, 25, 1000
         set format y "%.2f"
         plot \
-                "outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
-                "outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
+                "gnuplot/outfile.dat" u 1:2 w lp lw 2 lc rgb 'red' pt 2 t 'Lowest Price', \
+                "gnuplot/outfile2.dat" u 1:2 w lp lw 2 lc rgb 'green' pt 2 t 'Highest Price'
 EOF
 }
 
 # parameters for executing function
-if [[ "$1" == "bitcoinprice" ]]; then
-	bitcoinprice
-elif [[ "$1" == "ethereumprice" ]]; then
-	ethereumprice
-elif [[ "$1" == "xrpprice" ]]; then
-        xrpprice
-elif [[ "$1" == "bnbprice" ]]; then
-        bnbprice
-elif [[ "$1" == "allprices" ]]; then
-        allprices
+if [[ "$1" == "bitcoinpricechanges" ]]; then
+	bitcoinpricechanges
+elif [[ "$1" == "ethereumpricechanges" ]]; then
+	ethereumpricechanges
+elif [[ "$1" == "xrppricechanges" ]]; then
+        xrppricechanges
+elif [[ "$1" == "bnbpricechanges" ]]; then
+        bnbpricechanges
+elif [[ "$1" == "allpricechanges" ]]; then
+        allpricechanges
 elif [[ "$1" == "bitcoin24hr" ]]; then
         bitcoin24hr
 elif [[ "$1" == "ethereum24hr" ]]; then
@@ -313,4 +313,7 @@ elif [[ "$1" == "xrp24hr" ]]; then
         xrp24hr
 elif [[ "$1" == "bnb24hr" ]]; then
         bnb24hr
+else
+	echo "Invalid parameter! Please try again"
+	exit 1
 fi
