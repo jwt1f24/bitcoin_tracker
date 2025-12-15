@@ -28,7 +28,7 @@ USE `bitcoin_tracker`;
 --
 -- Table structure for table `cryptocurrency`
 --
-
+DROP TABLE IF EXISTS `prices`;
 DROP TABLE IF EXISTS `cryptocurrency`;
 CREATE TABLE `cryptocurrency` (
   `currencyID` int NOT NULL,
@@ -56,7 +56,6 @@ INSERT INTO `cryptocurrency` (`currencyID`, `name`) VALUES
 -- Table structure for table `prices`
 --
 
-DROP TABLE IF EXISTS `prices`;
 CREATE TABLE `prices` (
   `priceID` int NOT NULL,
   `currencyID` int NOT NULL,
